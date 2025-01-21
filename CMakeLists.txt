@@ -21,8 +21,9 @@ find_package(catkin REQUIRED COMPONENTS
 #find_package(Eigen3 REQUIRED)
 find_package(PCL 1.10 REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(Ceres 2.3 REQUIRED)
+find_package(Ceres 2.2 REQUIRED)
 FIND_PACKAGE(OpenMP REQUIRED)
+find_package(GTSAM REQUIRED)
 if(OPENMP_FOUND)
     message("OPENMP FOUND")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -55,6 +56,15 @@ target_link_libraries(alaserMapping ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES
 add_executable(kittiHelper src/kittiHelper.cpp)
 target_link_libraries(kittiHelper ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS})
 
-
-
+add_executable(alaserPGO
+    src/laserPosegraphOptimization.cpp
+    include/scancontext/Scancontext.cpp
+)
+target_link_libraries(alaserPGO
+    ${catkin_LIBRARIES}
+    ${PCL_LIBRARIES}
+    ${CERES_LIBRARIES}
+    ${OpenMP_CXX_FLAGS}
+    gtsam
+)
 
